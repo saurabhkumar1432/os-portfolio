@@ -1,0 +1,8 @@
+// Application exports
+export { default as ProjectsApp } from './ProjectsApp';
+export { default as FileExplorerApp } from './FileExplorerApp';
+export { default as TerminalApp } from './TerminalApp';
+export { default as AboutApp } from './AboutApp';
+export { default as NotepadApp } from './NotepadApp';
+export { default as SettingsApp } from './SettingsApp';
+export { default as ResumeViewerApp } from './ResumeViewerApp';
