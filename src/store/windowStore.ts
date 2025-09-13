@@ -202,31 +202,69 @@ export const useWindowStore = create<WindowStore>()(
     },
 
     maximizeWindow: (windowId: string) => {
-      set((state) => ({
-        windows: {
-          ...state.windows,
-          [windowId]: {
-            ...state.windows[windowId],
-            maximized: !state.windows[windowId].maximized,
-            snapState: state.windows[windowId].maximized ? null : 'maximized',
-          },
-        },
-      }));
+      set((state) => {
+        const window = state.windows[windowId];
+        if (!window) return state;
+
+        const isCurrentlyMaximized = window.maximized;
+        
+        if (isCurrentlyMaximized) {
+          // Restore from maximized state
+          return {
+            windows: {
+              ...state.windows,
+              [windowId]: {
+                ...window,
+                maximized: false,
+                snapState: null,
+                bounds: window.previousBounds || window.bounds,
+                previousBounds: undefined,
+              },
+            },
+          };
+        } else {
+          // Maximize the window
+          return {
+            windows: {
+              ...state.windows,
+              [windowId]: {
+                ...window,
+                maximized: true,
+                snapState: 'maximized',
+                previousBounds: { ...window.bounds },
+                bounds: { 
+                  x: 0, 
+                  y: 0, 
+                  w: globalThis.window?.innerWidth || 1920, 
+                  h: (globalThis.window?.innerHeight || 1080) - 48 
+                },
+              },
+            },
+          };
+        }
+      });
     },
 
     restoreWindow: (windowId: string) => {
-      set((state) => ({
-        windows: {
-          ...state.windows,
-          [windowId]: {
-            ...state.windows[windowId],
-            minimized: false,
-            maximized: false,
-            snapState: null,
-            focused: true,
+      set((state) => {
+        const window = state.windows[windowId];
+        if (!window) return state;
+
+        return {
+          windows: {
+            ...state.windows,
+            [windowId]: {
+              ...window,
+              minimized: false,
+              maximized: false,
+              snapState: null,
+              focused: true,
+              bounds: window.previousBounds || window.bounds,
+              previousBounds: undefined,
+            },
           },
-        },
-      }));
+        };
+      });
     },
 
     updateWindowBounds: (

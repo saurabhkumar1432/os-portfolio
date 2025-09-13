@@ -4,7 +4,11 @@ import type { WindowState, AppId } from '@/types';
 export const WINDOW_CONSTRAINTS = {
   MIN_WIDTH: 320,
   MIN_HEIGHT: 240,
-  TASKBAR_HEIGHT: 48,
+  get TASKBAR_HEIGHT() {
+    // Dynamic taskbar height based on screen size
+    if (typeof window === 'undefined') return 48;
+    return window.innerWidth < 768 ? 0 : 48;
+  },
   TITLE_BAR_HEIGHT: 32,
 } as const;
 

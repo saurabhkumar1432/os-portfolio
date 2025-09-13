@@ -112,8 +112,8 @@ export const StartMenu: React.FC = () => {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-40"
-            style={{ zIndex: 45 }}
+            className="fixed inset-0"
+            style={{ zIndex: 10000 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -128,7 +128,7 @@ export const StartMenu: React.FC = () => {
                 ? 'bg-gray-900/95 border-gray-700 backdrop-blur-md'
                 : 'bg-white/95 border-gray-200 backdrop-blur-md'
             }`}
-            style={{ zIndex: 60 }}
+            style={{ zIndex: 10001 }}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}

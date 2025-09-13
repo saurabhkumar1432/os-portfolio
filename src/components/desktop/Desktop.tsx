@@ -123,7 +123,7 @@ export const Desktop: React.FC = () => {
       {isMobile && (
         <motion.button
           onClick={toggleStartMenu}
-          className={`fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-30 ${
+          className={`fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-[100] ${
             isDark
               ? 'bg-blue-600 hover:bg-blue-700 text-white'
               : 'bg-blue-500 hover:bg-blue-600 text-white'

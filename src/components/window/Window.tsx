@@ -30,7 +30,16 @@ export const Window: React.FC<WindowProps> = ({ window, children }) => {
   }
 
   const windowStyle = window.maximized
-    ? { x: 0, y: 0, width: '100vw', height: 'calc(100vh - 48px)' }
+    ? (() => {
+        const isMobile = globalThis.window?.innerWidth < 768;
+        const taskbarHeight = isMobile ? 0 : 48;
+        return { 
+          x: 0, 
+          y: 0, 
+          width: '100vw', 
+          height: `calc(100vh - ${taskbarHeight}px)` 
+        };
+      })()
     : { 
         x: window.bounds.x, 
         y: window.bounds.y, 

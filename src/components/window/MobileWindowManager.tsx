@@ -62,7 +62,7 @@ export const MobileWindowManager: React.FC<MobileWindowManagerProps> = ({ childr
   const overflowTabs = visibleWindows.slice(maxVisibleTabs);
 
   return (
-    <div className="fixed inset-0 flex flex-col z-[1000]">
+    <div className="fixed inset-0 flex flex-col z-[1500]">
       {/* Mobile Tab Bar */}
       <div className={`flex-shrink-0 border-b ${
         isDark 
@@ -105,7 +105,7 @@ export const MobileWindowManager: React.FC<MobileWindowManagerProps> = ({ childr
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className={`absolute right-0 top-full mt-1 min-w-48 rounded-md shadow-lg border z-50 ${
+                    className={`absolute right-0 top-full mt-1 min-w-48 rounded-md shadow-lg border z-[1600] ${
                       isDark
                         ? 'bg-gray-800 border-gray-600'
                         : 'bg-white border-gray-200'
@@ -164,7 +164,7 @@ export const MobileWindowManager: React.FC<MobileWindowManagerProps> = ({ childr
 
         {/* Swipe Indicator */}
         {visibleWindows.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[1550]">
             <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs ${
               isDark
                 ? 'bg-gray-800/80 text-gray-300 border border-gray-600'
@@ -181,7 +181,7 @@ export const MobileWindowManager: React.FC<MobileWindowManagerProps> = ({ childr
       {/* Click outside to close overflow */}
       {showTabOverflow && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-[1450]"
           onClick={() => setShowTabOverflow(false)}
         />
       )}

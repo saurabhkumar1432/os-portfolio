@@ -237,7 +237,7 @@ const systemCommand: TerminalCommand = {
 System Information:
 
 OS: Portfolio OS v1.0.0
-Browser: ${navigator.userAgent.split(' ').pop()}
+Browser: ${navigator.userAgent.split(' ').pop() || 'Unknown'}
 Platform: ${navigator.platform}
 Language: ${navigator.language}
 Screen: ${screen.width}x${screen.height}

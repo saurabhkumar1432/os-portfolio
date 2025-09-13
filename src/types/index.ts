@@ -14,6 +14,7 @@ export interface WindowState {
   appId: AppId;
   title: string;
   bounds: { x: number; y: number; w: number; h: number };
+  previousBounds?: { x: number; y: number; w: number; h: number }; // Store bounds before maximizing
   zIndex: number;
   minimized: boolean;
   maximized: boolean;

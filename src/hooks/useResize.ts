@@ -22,7 +22,9 @@ export const useResize = ({ windowId, onResizeStart, onResizeEnd }: UseResizeOpt
   const isResizingRef = useRef(false);
 
   const getViewportConstraints = useCallback(() => {
-    const taskbarHeight = 48;
+    // Dynamically calculate taskbar height based on responsive state
+    const isMobile = window.innerWidth < 768;
+    const taskbarHeight = isMobile ? 0 : 48; // No taskbar on mobile, 48px on desktop
     return {
       minX: 0,
       minY: 0,

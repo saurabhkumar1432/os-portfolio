@@ -170,7 +170,7 @@ export const ContextMenu: React.FC = () => {
   return (
     <motion.div
       ref={menuRef}
-      className="fixed bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 z-50 min-w-48"
+      className="fixed bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 z-[2000] min-w-48"
       style={{ left: adjustedPosition.x, top: adjustedPosition.y }}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}

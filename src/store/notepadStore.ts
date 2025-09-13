@@ -212,7 +212,12 @@ export const useNotepadStore = create<NotepadStore>()(
 
           getVersions: (documentId: string) => {
             const state = get();
-            return state.versions[documentId] || [];
+            const versions = state.versions[documentId] || [];
+            // Ensure timestamps are Date objects
+            return versions.map(version => ({
+              ...version,
+              timestamp: typeof version.timestamp === 'string' ? new Date(version.timestamp) : version.timestamp
+            }));
           },
 
           exportDocument: (id: string, format: 'txt' | 'md') => {
@@ -240,7 +245,17 @@ export const useNotepadStore = create<NotepadStore>()(
 
           getActiveDocument: () => {
             const state = get();
-            return state.activeDocumentId ? state.documents[state.activeDocumentId] || null : null;
+            const doc = state.activeDocumentId ? state.documents[state.activeDocumentId] || null : null;
+            if (doc) {
+              // Ensure dates are Date objects
+              if (typeof doc.lastModified === 'string') {
+                doc.lastModified = new Date(doc.lastModified);
+              }
+              if (typeof doc.created === 'string') {
+                doc.created = new Date(doc.created);
+              }
+            }
+            return doc;
           },
 
           hasUnsavedChanges: (id: string) => {
@@ -250,18 +265,25 @@ export const useNotepadStore = create<NotepadStore>()(
 
           getDocumentList: () => {
             const state = get();
-            return Object.values(state.documents).sort((a, b) => 
-              b.lastModified.getTime() - a.lastModified.getTime()
-            );
+            return Object.values(state.documents).sort((a, b) => {
+              // Ensure dates are Date objects and handle invalid dates
+              const getTime = (date: any) => {
+                if (date instanceof Date) return date.getTime();
+                if (typeof date === 'string') {
+                  const parsed = new Date(date);
+                  return isNaN(parsed.getTime()) ? 0 : parsed.getTime();
+                }
+                return 0;
+              };
+
+              return getTime(b.lastModified) - getTime(a.lastModified);
+            });
           },
         };
       },
       {
         name: 'notepad-store',
       }
-    ),
-    {
-      name: 'notepad-store',
-    }
+    )
   )
 );

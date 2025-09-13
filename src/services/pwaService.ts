@@ -66,7 +66,7 @@ export class PWAService {
   private detectInstallationState(): void {
     // Check if running in standalone mode
     this.installationState.isStandalone = 
-      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
       (window.navigator as any).standalone === true;
 
     // Check if already installed
