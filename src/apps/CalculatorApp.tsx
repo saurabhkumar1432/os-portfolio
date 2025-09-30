@@ -194,13 +194,13 @@ export const CalculatorApp: React.FC = () => {
   }, [display, previousValue, operation, waitingForOperand]);
 
   return (
-    <div className="flex flex-col h-full bg-gray-100 dark:bg-gray-900 min-w-[280px]">
+    <div className="flex flex-col h-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
       {/* Mode Toggle */}
       <div className="flex items-center justify-between p-2 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
         <div className="flex gap-2">
           <button
             onClick={() => setMode('standard')}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
               mode === 'standard'
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
@@ -210,7 +210,7 @@ export const CalculatorApp: React.FC = () => {
           </button>
           <button
             onClick={() => setMode('scientific')}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
               mode === 'scientific'
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
@@ -219,29 +219,29 @@ export const CalculatorApp: React.FC = () => {
             Scientific
           </button>
         </div>
-        <Settings2 className="w-4 h-4 text-gray-400" />
+        <Settings2 className="w-3 h-3 text-gray-400" />
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Main Calculator */}
-        <div className={`flex flex-col ${mode === 'scientific' ? 'md:w-2/3 w-full' : 'w-full'}`}>
+        <div className={`flex flex-col ${mode === 'scientific' ? 'md:w-2/3 w-full' : 'w-full'} min-h-0`}>
           {/* Display */}
-          <div className="p-4 md:p-6 bg-gray-900 dark:bg-black text-right flex-shrink-0">
-            <div className="text-xs md:text-sm text-gray-500 h-5 md:h-6 truncate">
+          <div className="p-3 bg-gray-900 dark:bg-black text-right flex-shrink-0">
+            <div className="text-xs text-gray-500 h-4 truncate">
               {previousValue !== null && operation && `${previousValue} ${operation}`}
             </div>
-            <div className="text-2xl md:text-4xl font-light text-white mt-1 md:mt-2 truncate">
+            <div className="text-2xl font-light text-white mt-1 truncate">
               {display}
             </div>
           </div>
 
           {/* Buttons */}
-          <div className="flex-1 grid grid-cols-4 gap-0.5 md:gap-1 p-0.5 md:p-1 min-h-[300px]">
+          <div className="flex-1 grid grid-cols-4 gap-0.5 p-0.5">
             {/* Row 1 */}
             <CalcButton label="C" onClick={clear} variant="function" />
             <CalcButton label="CE" onClick={clearEntry} variant="function" />
-            <CalcButton icon={<Delete className="w-5 h-5" />} onClick={backspace} variant="function" />
-            <CalcButton icon={<DivideIcon className="w-5 h-5" />} onClick={() => performOperation('/')} variant="operator" />
+            <CalcButton icon={<Delete className="w-3 h-3" />} onClick={backspace} variant="function" />
+            <CalcButton icon={<DivideIcon className="w-3 h-3" />} onClick={() => performOperation('/')} variant="operator" />
 
             {/* Row 2 */}
             <CalcButton label="7" onClick={() => inputDigit('7')} />
@@ -331,15 +331,15 @@ const CalcButton: React.FC<CalcButtonProps> = ({ label, icon, onClick, variant =
   const getButtonStyles = () => {
     switch (variant) {
       case 'operator':
-        return 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-medium';
+        return 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700 text-white font-medium text-sm';
       case 'equals':
-        return 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold';
+        return 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold text-sm';
       case 'function':
-        return 'bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 active:bg-gray-500 dark:active:bg-gray-500 text-gray-700 dark:text-gray-200';
+        return 'bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 active:bg-gray-500 dark:active:bg-gray-500 text-gray-700 dark:text-gray-200 text-xs';
       case 'scientific':
-        return 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 active:bg-gray-400 dark:active:bg-gray-500 text-gray-700 dark:text-gray-200 text-xs md:text-sm';
+        return 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 active:bg-gray-400 dark:active:bg-gray-500 text-gray-700 dark:text-gray-200 text-xs';
       default:
-        return 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 text-gray-900 dark:text-white text-base md:text-lg';
+        return 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 text-gray-900 dark:text-white text-base';
     }
   };
 
@@ -348,7 +348,7 @@ const CalcButton: React.FC<CalcButtonProps> = ({ label, icon, onClick, variant =
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className={`aspect-square rounded flex items-center justify-center transition-colors select-none touch-manipulation ${getButtonStyles()}`}
+      className={`aspect-square rounded flex items-center justify-center transition-colors select-none touch-manipulation min-h-[60px] ${getButtonStyles()}`}
     >
       {icon || label}
     </motion.button>

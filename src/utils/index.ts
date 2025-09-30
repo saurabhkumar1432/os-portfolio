@@ -218,6 +218,33 @@ export const appUtils = {
         maximizable: true,
         multiInstance: false,
       },
+      'screenshot': {
+        name: 'Screenshot Tool',
+        icon: 'camera',
+        defaultSize: { width: 900, height: 700 },
+        minSize: { width: 600, height: 500 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      'task-manager': {
+        name: 'Task Manager',
+        icon: 'activity',
+        defaultSize: { width: 800, height: 650 },
+        minSize: { width: 600, height: 450 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      'color-picker': {
+        name: 'Color Picker',
+        icon: 'palette',
+        defaultSize: { width: 600, height: 700 },
+        minSize: { width: 450, height: 600 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
     };
     
     return configs[appId];

@@ -5,4 +5,6 @@ export { ToastNotifications } from './ToastNotifications';
 export { ActionCenter } from './ActionCenter';
 export { QuickSettings } from './QuickSettings';
 export { WindowPeek } from './WindowPeek';
+export { LoadingSpinner } from './LoadingSpinner';
 export { SnapPreviewOverlay } from './SnapPreviewOverlay';
+export { CustomContextMenu, DesktopContextMenu, WindowContextMenu, TextContextMenu } from './CustomContextMenu';

@@ -271,15 +271,30 @@ export const useWindowStore = create<WindowStore>()(
       windowId: string,
       bounds: Partial<WindowState['bounds']>
     ) => {
-      set((state) => ({
-        windows: {
-          ...state.windows,
-          [windowId]: {
-            ...state.windows[windowId],
-            bounds: { ...state.windows[windowId].bounds, ...bounds },
+      set((state) => {
+        const window = state.windows[windowId];
+        if (!window) return state;
+
+        // Constrain bounds to viewport
+        const constrainedBounds = { ...window.bounds, ...bounds };
+        const viewportWidth = globalThis.window?.innerWidth || 1920;
+        const viewportHeight = globalThis.window?.innerHeight || 1080;
+        const taskbarHeight = 48;
+
+        // Ensure window stays on screen
+        constrainedBounds.x = Math.max(0, Math.min(constrainedBounds.x, viewportWidth - constrainedBounds.w - 20));
+        constrainedBounds.y = Math.max(0, Math.min(constrainedBounds.y, viewportHeight - constrainedBounds.h - taskbarHeight - 20));
+
+        return {
+          windows: {
+            ...state.windows,
+            [windowId]: {
+              ...state.windows[windowId],
+              bounds: constrainedBounds,
+            },
           },
-        },
-      }));
+        };
+      });
     },
 
     updateWindowTitle: (windowId: string, title: string) => {

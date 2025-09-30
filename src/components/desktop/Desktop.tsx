@@ -8,7 +8,7 @@ import { useResponsive } from '../../hooks/useResponsive';
 import { useTouchGestures } from '../../hooks/useTouchGestures';
 import { getWallpaperValue } from '../../assets/wallpapers';
 import { DesktopIcon } from './DesktopIcon';
-import { ContextMenu } from './ContextMenu';
+import { DesktopContextMenu } from '../ui/CustomContextMenu';
 import { TouchContextMenu } from '../ui/TouchContextMenu';
 
 export const Desktop: React.FC = () => {
@@ -22,7 +22,8 @@ export const Desktop: React.FC = () => {
     startDragSelection,
     updateDragSelection,
     endDragSelection,
-    loadIconLayout
+    loadIconLayout,
+    setIconSize
   } = useDesktopStore();
   const { wallpaper, theme } = usePreferencesStore();
   const { toggleStartMenu } = useStartMenuStore();
@@ -63,6 +64,43 @@ export const Desktop: React.FC = () => {
     // Disable context menu on mobile
     if (!isMobile) {
       showContextMenu(e.clientX, e.clientY);
+    }
+  };
+
+  const handleContextAction = (action: string) => {
+    hideContextMenu();
+    
+    switch (action) {
+      case 'refresh':
+        // Reload the page
+        window.location.reload();
+        break;
+      case 'view-large-icons':
+        setIconSize('lg');
+        break;
+      case 'view-medium-icons':
+        setIconSize('md');
+        break;
+      case 'view-small-icons':
+        setIconSize('sm');
+        break;
+      case 'sort-name':
+      case 'sort-date':
+      case 'sort-type':
+        // Sort icons - could be implemented in desktop store
+        // Sort by: action.split('-')[1]
+        break;
+      case 'personalize':
+        // Open Settings app
+        toggleStartMenu();
+        break;
+      case 'settings':
+        // Open Settings app
+        toggleStartMenu();
+        break;
+      default:
+        // Unhandled context menu action
+        break;
     }
   };
 
@@ -113,10 +151,16 @@ export const Desktop: React.FC = () => {
       onClick={handleClick}
     >
       {/* Desktop Icons */}
-      <div className={`absolute inset-0 ${isMobile ? 'p-6' : 'p-4'}`}>
-        {icons.map((icon) => (
-          <DesktopIcon key={icon.id} icon={icon} />
-        ))}
+      <div className={`absolute inset-0 z-10 ${isMobile ? 'p-6' : 'p-4'}`}>
+        {icons.length > 0 ? (
+          icons.map((icon) => (
+            <DesktopIcon key={icon.id} icon={icon} />
+          ))
+        ) : (
+          <div className="text-white text-center mt-20 opacity-50">
+            No desktop icons
+          </div>
+        )}
       </div>
 
       {/* Mobile Floating Action Button */}
@@ -167,7 +211,12 @@ export const Desktop: React.FC = () => {
             onItemClick={(item) => item.action?.()}
           />
         ) : (
-          <ContextMenu />
+          <DesktopContextMenu
+            x={contextMenu.x}
+            y={contextMenu.y}
+            onClose={hideContextMenu}
+            onAction={handleContextAction}
+          />
         )
       )}
     </div>

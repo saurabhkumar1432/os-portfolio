@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useWindowStore } from '../../store/windowStore';
 import { usePreferencesStore } from '../../store/preferencesStore';
 import { useDragOptimized } from '../../hooks/useDragOptimized';
 import { useCloseConfirmation } from '../../hooks/useCloseConfirmation';
+import { WindowContextMenu } from '../ui/CustomContextMenu';
 import type { WindowState } from '../../types';
 
 interface WindowTitleBarProps {
@@ -14,6 +15,7 @@ export const WindowTitleBar: React.FC<WindowTitleBarProps> = ({ window }) => {
   const { minimizeWindow, maximizeWindow, dragState } = useWindowStore();
   const { theme } = usePreferencesStore();
   const { requestClose } = useCloseConfirmation();
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
   const isDark = theme === 'dark' || (theme === 'auto' && globalThis.window?.matchMedia('(prefers-color-scheme: dark)').matches);
 
   const dragHandlers = useDragOptimized({
@@ -23,6 +25,31 @@ export const WindowTitleBar: React.FC<WindowTitleBarProps> = ({ window }) => {
 
   const handleDoubleClick = () => {
     maximizeWindow(window.id);
+  };
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleContextAction = (action: string) => {
+    setContextMenu(null);
+    
+    switch (action) {
+      case 'minimize':
+        minimizeWindow(window.id);
+        break;
+      case 'maximize':
+        maximizeWindow(window.id);
+        break;
+      case 'close':
+        requestClose(window.id);
+        break;
+      default:
+        // Unhandled window context menu action
+        break;
+    }
   };
 
   const isDragging = dragState?.windowId === window.id;
@@ -49,28 +76,30 @@ export const WindowTitleBar: React.FC<WindowTitleBarProps> = ({ window }) => {
   };
 
   return (
-    <div
-      className={`flex items-center justify-between h-8 px-3 select-none border-b transition-colors ${
-        isDragging ? 'cursor-grabbing' : 'cursor-move'
-      } ${
-        window.focused
-          ? isDark
-            ? 'bg-gray-700 border-gray-600'
-            : 'bg-gray-50 border-gray-200'
-          : isDark
-          ? 'bg-gray-800 border-gray-700'
-          : 'bg-gray-100 border-gray-300'
-      } ${
-        isDragging
-          ? isDark
-            ? 'bg-gray-600'
-            : 'bg-gray-200'
-          : ''
-      }`}
-      onMouseDown={dragHandlers.onMouseDown}
-      onTouchStart={dragHandlers.onTouchStart}
-      onDoubleClick={handleDoubleClick}
-    >
+    <>
+      <div
+        className={`flex items-center justify-between h-8 px-3 select-none border-b transition-colors ${
+          isDragging ? 'cursor-grabbing' : 'cursor-move'
+        } ${
+          window.focused
+            ? isDark
+              ? 'bg-gray-700 border-gray-600'
+              : 'bg-gray-50 border-gray-200'
+            : isDark
+            ? 'bg-gray-800 border-gray-700'
+            : 'bg-gray-100 border-gray-300'
+        } ${
+          isDragging
+            ? isDark
+              ? 'bg-gray-600'
+              : 'bg-gray-200'
+            : ''
+        }`}
+        onMouseDown={dragHandlers.onMouseDown}
+        onTouchStart={dragHandlers.onTouchStart}
+        onDoubleClick={handleDoubleClick}
+        onContextMenu={handleContextMenu}
+      >
       {/* Left side - Icon and Title */}
       <div className="flex items-center gap-2 flex-1 min-w-0">
         {getAppIcon()}
@@ -145,5 +174,21 @@ export const WindowTitleBar: React.FC<WindowTitleBarProps> = ({ window }) => {
         </motion.button>
       </div>
     </div>
+    
+    {/* Window Context Menu */}
+    {contextMenu && (
+      <WindowContextMenu
+        x={contextMenu.x}
+        y={contextMenu.y}
+        onClose={() => setContextMenu(null)}
+        onAction={handleContextAction}
+        windowState={{
+          minimized: window.minimized,
+          maximized: window.maximized,
+          focused: window.focused,
+        }}
+      />
+    )}
+  </>
   );
 };

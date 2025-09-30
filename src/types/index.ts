@@ -8,7 +8,10 @@ export type AppId =
   | 'settings'
   | 'resume-viewer'
   | 'calculator'
-  | 'clipboard';
+  | 'clipboard'
+  | 'screenshot'
+  | 'task-manager'
+  | 'color-picker';
 
 // Window management types
 export interface WindowState {

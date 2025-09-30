@@ -43,20 +43,20 @@ export const ClockWidget: React.FC<ClockWidgetProps> = ({ compact = false }) => 
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 shadow-lg border border-white/20 dark:border-gray-700/20"
+      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg rounded-2xl p-4 shadow-xl border border-white/20 dark:border-gray-700/20 min-w-[240px]"
     >
       {/* Digital Time */}
-      <div className="text-center mb-4">
-        <div className="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+      <div className="text-center mb-3">
+        <div className="text-3xl font-bold text-gray-900 dark:text-white tabular-nums">
           {format(time, show24Hour ? 'HH:mm:ss' : 'h:mm:ss')}
         </div>
-        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          {format(time, 'EEEE, MMMM d, yyyy')}
+        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          {format(time, 'EEE, MMM d, yyyy')}
         </div>
       </div>
 
       {/* Analog Clock */}
-      <div className="relative w-40 h-40 mx-auto mb-4">
+      <div className="relative w-32 h-32 mx-auto mb-3">
         {/* Clock Face */}
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800 shadow-inner border-4 border-gray-200 dark:border-gray-600">
           {/* Hour Markers */}
@@ -81,45 +81,42 @@ export const ClockWidget: React.FC<ClockWidgetProps> = ({ compact = false }) => 
           <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-red-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 z-30" />
 
           {/* Hour Hand */}
-          <motion.div
-            className="absolute top-1/2 left-1/2 origin-bottom"
+          <div
+            className="absolute left-1/2 top-1/2"
             style={{
               width: '4px',
-              height: '25%',
+              height: '30%',
               backgroundColor: '#1f2937',
               borderRadius: '2px',
               transform: `translate(-50%, -100%) rotate(${hoursDeg}deg)`,
+              transformOrigin: 'bottom center',
             }}
-            animate={{ rotate: hoursDeg }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
 
           {/* Minute Hand */}
-          <motion.div
-            className="absolute top-1/2 left-1/2 origin-bottom"
+          <div
+            className="absolute left-1/2 top-1/2"
             style={{
               width: '3px',
-              height: '35%',
+              height: '40%',
               backgroundColor: '#374151',
               borderRadius: '2px',
               transform: `translate(-50%, -100%) rotate(${minutesDeg}deg)`,
+              transformOrigin: 'bottom center',
             }}
-            animate={{ rotate: minutesDeg }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
           />
 
           {/* Second Hand */}
-          <motion.div
-            className="absolute top-1/2 left-1/2 origin-bottom"
+          <div
+            className="absolute left-1/2 top-1/2"
             style={{
               width: '2px',
-              height: '40%',
+              height: '45%',
               backgroundColor: '#ef4444',
               borderRadius: '1px',
               transform: `translate(-50%, -100%) rotate(${secondsDeg}deg)`,
+              transformOrigin: 'bottom center',
             }}
-            animate={{ rotate: secondsDeg }}
-            transition={{ duration: 0.5, ease: 'linear' }}
           />
         </div>
       </div>
@@ -127,9 +124,9 @@ export const ClockWidget: React.FC<ClockWidgetProps> = ({ compact = false }) => 
       {/* Toggle Button */}
       <button
         onClick={() => setShow24Hour(!show24Hour)}
-        className="w-full py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+        className="w-full py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
       >
-        {show24Hour ? '12-hour format' : '24-hour format'}
+        {show24Hour ? '12h' : '24h'}
       </button>
     </motion.div>
   );

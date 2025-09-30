@@ -88,7 +88,7 @@ const FileExplorerApp: React.FC<AppProps> = ({ onTitleChange }) => {
   const handleCopyPath = async (file: VNode) => {
     try {
       await navigator.clipboard.writeText(file.path);
-      console.log('Path copied to clipboard:', file.path);
+      // Path copied successfully
     } catch (error) {
       console.error('Failed to copy path:', error);
     }

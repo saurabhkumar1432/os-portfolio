@@ -8,6 +8,7 @@ import { StartButton } from './StartButton';
 import { StartMenu } from './StartMenu';
 import { MobileStartMenu } from './MobileStartMenu';
 import { TaskbarButton } from './TaskbarButton';
+import { TaskbarSearch } from './TaskbarSearch';
 import { SystemTray } from './SystemTray';
 
 interface TaskbarProps {
@@ -50,6 +51,9 @@ export const Taskbar: React.FC<TaskbarProps> = ({ onToggleQuickSettings, onToggl
 
           {/* Start Menu */}
           <StartMenu />
+
+          {/* Search Bar */}
+          <TaskbarSearch />
 
           {/* Taskbar Buttons */}
           <div className="flex-1 flex items-center gap-1 px-2">

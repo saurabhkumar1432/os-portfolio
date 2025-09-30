@@ -2,6 +2,7 @@ export { Desktop } from './Desktop';
 export { DesktopIcon } from './DesktopIcon';
 export { ContextMenu } from './ContextMenu';
 export { Taskbar } from './Taskbar';
+export { TaskbarSearch } from './TaskbarSearch';
 export { StartButton } from './StartButton';
 export { StartMenu } from './StartMenu';
 export { MobileStartMenu } from './MobileStartMenu';

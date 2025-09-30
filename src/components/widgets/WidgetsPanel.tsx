@@ -20,12 +20,33 @@ interface WidgetsPanelProps {
 
 export const WidgetsPanel: React.FC<WidgetsPanelProps> = () => {
   const [widgets, setWidgets] = useState<Widget[]>([
-    { id: 'clock-1', type: 'clock', position: { x: 20, y: 20 }, pinned: false },
-    { id: 'calendar-1', type: 'calendar', position: { x: 280, y: 20 }, pinned: false },
-    { id: 'weather-1', type: 'weather', position: { x: 20, y: 280 }, pinned: false },
+    { id: 'clock-1', type: 'clock', position: { x: window.innerWidth - 300, y: 20 }, pinned: false },
+    { id: 'calendar-1', type: 'calendar', position: { x: window.innerWidth - 350, y: 200 }, pinned: false },
+    { id: 'weather-1', type: 'weather', position: { x: window.innerWidth - 320, y: 420 }, pinned: false },
   ]);
 
   const [draggedWidget, setDraggedWidget] = useState<string | null>(null);
+  const rafRef = React.useRef<number | null>(null);
+
+  // Cleanup RAF on unmount
+  React.useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
+  
+  // Constrain position within viewport bounds
+  const constrainPosition = (x: number, y: number, widgetWidth = 280, widgetHeight = 250) => {
+    const maxX = window.innerWidth - widgetWidth - 20;
+    const maxY = window.innerHeight - widgetHeight - 80; // Account for taskbar
+    
+    return {
+      x: Math.max(10, Math.min(x, maxX)),
+      y: Math.max(10, Math.min(y, maxY)),
+    };
+  };
 
   const removeWidget = (id: string) => {
     setWidgets(widgets.filter(w => w.id !== id));
@@ -51,7 +72,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] pointer-events-none">
+    <div className="fixed inset-0 z-[500] pointer-events-none">
       <div className="relative w-full h-full p-4">
         <AnimatePresence>
           {widgets.map((widget) => (
@@ -60,28 +81,41 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = () => {
               drag
               dragMomentum={false}
               dragElastic={0}
+              dragConstraints={{
+                left: 10,
+                right: window.innerWidth - 300,
+                top: 10,
+                bottom: window.innerHeight - 300
+              }}
               onDragStart={() => setDraggedWidget(widget.id)}
-              onDragEnd={(_e, info) => {
+              onDrag={(_e, info) => {
+                // Use RAF for smooth 60fps updates
+                if (rafRef.current) {
+                  cancelAnimationFrame(rafRef.current);
+                }
+                rafRef.current = requestAnimationFrame(() => {
+                  const newPos = constrainPosition(info.point.x - 140, info.point.y - 20);
+                  setWidgets(prev => prev.map(w =>
+                    w.id === widget.id ? { ...w, position: newPos } : w
+                  ));
+                });
+              }}
+              onDragEnd={() => {
                 setDraggedWidget(null);
-                setWidgets(widgets.map(w =>
-                  w.id === widget.id
-                    ? {
-                        ...w,
-                        position: {
-                          x: w.position.x + info.offset.x,
-                          y: w.position.y + info.offset.y,
-                        },
-                      }
-                    : w
-                ));
               }}
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1,
+                x: widget.position.x,
+                y: widget.position.y
+              }}
               exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               style={{
                 position: 'absolute',
-                left: widget.position.x,
-                top: widget.position.y,
+                left: 0,
+                top: 0,
                 cursor: draggedWidget === widget.id ? 'grabbing' : 'grab',
               }}
               className="pointer-events-auto group"

@@ -43,7 +43,9 @@ export const WindowManager: React.FC = () => {
               focused={window.focused}
               onTitleChange={(title) => {
                 // TODO: Update window title if needed
-                console.log(`Title change for ${window.id}:`, title);
+                if (title) {
+                  // Title change detected
+                }
               }}
               onUnsavedStateChange={(hasUnsaved) => {
                 const { updateWindowUnsavedState } = useWindowStore.getState();

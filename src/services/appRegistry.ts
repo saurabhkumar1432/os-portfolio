@@ -44,6 +44,12 @@ const CalculatorApp = lazy(() => import('../apps/CalculatorApp'));
 
 const ClipboardManagerApp = lazy(() => import('../apps/ClipboardManagerApp'));
 
+const ScreenshotApp = lazy(() => import('../apps/ScreenshotApp'));
+
+const TaskManagerApp = lazy(() => import('../apps/TaskManagerApp'));
+
+const ColorPickerApp = lazy(() => import('../apps/ColorPickerApp'));
+
 /**
  * Application registry that manages all available applications
  * Provides centralized configuration and dynamic loading capabilities
@@ -150,8 +156,8 @@ export class AppRegistry {
         name: 'Calculator',
         icon: 'Calculator',
         component: CalculatorApp,
-        defaultSize: { width: 380, height: 580 },
-        minSize: { width: 280, height: 450 },
+        defaultSize: { width: 360, height: 640 },
+        minSize: { width: 320, height: 580 },
         resizable: true,
         maximizable: true,
         multiInstance: false,
@@ -163,6 +169,39 @@ export class AppRegistry {
         component: ClipboardManagerApp,
         defaultSize: { width: 500, height: 650 },
         minSize: { width: 350, height: 400 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      {
+        id: 'screenshot',
+        name: 'Screenshot Tool',
+        icon: 'Camera',
+        component: ScreenshotApp,
+        defaultSize: { width: 900, height: 700 },
+        minSize: { width: 600, height: 500 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      {
+        id: 'task-manager',
+        name: 'Task Manager',
+        icon: 'Activity',
+        component: TaskManagerApp,
+        defaultSize: { width: 800, height: 650 },
+        minSize: { width: 600, height: 450 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      {
+        id: 'color-picker',
+        name: 'Color Picker',
+        icon: 'Palette',
+        component: ColorPickerApp,
+        defaultSize: { width: 600, height: 700 },
+        minSize: { width: 450, height: 600 },
         resizable: true,
         maximizable: true,
         multiInstance: false,
