@@ -10,7 +10,12 @@ import { MobileStartMenu } from './MobileStartMenu';
 import { TaskbarButton } from './TaskbarButton';
 import { SystemTray } from './SystemTray';
 
-export const Taskbar: React.FC = () => {
+interface TaskbarProps {
+  onToggleQuickSettings: () => void;
+  onToggleWidgets?: () => void;
+}
+
+export const Taskbar: React.FC<TaskbarProps> = ({ onToggleQuickSettings, onToggleWidgets }) => {
   const { windows, zOrder } = useWindowStore();
   const { theme } = usePreferencesStore();
   const { isOpen: startMenuOpen, toggleStartMenu } = useStartMenuStore();
@@ -54,7 +59,10 @@ export const Taskbar: React.FC = () => {
           </div>
 
           {/* System Tray */}
-          <SystemTray />
+          <SystemTray 
+            onToggleQuickSettings={onToggleQuickSettings}
+            onToggleWidgets={onToggleWidgets}
+          />
         </motion.div>
       )}
 

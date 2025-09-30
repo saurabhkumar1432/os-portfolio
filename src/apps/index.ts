@@ -6,3 +6,4 @@ export { default as AboutApp } from './AboutApp';
 export { default as NotepadApp } from './NotepadApp';
 export { default as SettingsApp } from './SettingsApp';
 export { default as ResumeViewerApp } from './ResumeViewerApp';
+export { default as CalculatorApp } from './CalculatorApp';

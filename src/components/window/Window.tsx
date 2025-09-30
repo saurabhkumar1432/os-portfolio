@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { usePreferencesStore } from '../../store/preferencesStore';
 import { useWindowStore } from '../../store/windowStore';
@@ -25,31 +25,61 @@ export const Window: React.FC<WindowProps> = ({ window, children }) => {
     }
   };
 
+  // Memoize window style calculations
+  const windowStyle = useMemo(() => {
+    if (window.maximized) {
+      const isMobile = globalThis.window?.innerWidth < 768;
+      const taskbarHeight = isMobile ? 0 : 48;
+      return { 
+        x: 0, 
+        y: 0, 
+        width: '100vw', 
+        height: `calc(100vh - ${taskbarHeight}px)` 
+      };
+    }
+    return { 
+      x: window.bounds.x, 
+      y: window.bounds.y, 
+      width: window.bounds.w, 
+      height: window.bounds.h 
+    };
+  }, [window.maximized, window.bounds.x, window.bounds.y, window.bounds.w, window.bounds.h]);
+
+  // Memoize animation variants
+  const animationVariants = useMemo(() => {
+    if (reduceMotion) return {};
+    
+    return {
+      initial: { scale: 0.95, opacity: 0 },
+      animate: { 
+        scale: 1, 
+        opacity: 1,
+      },
+      exit: { scale: 0.95, opacity: 0 },
+    };
+  }, [reduceMotion]);
+
+  // Optimize transition for drag/resize
+  const transition = useMemo(() => {
+    if (isDragging || isResizing) {
+      return {
+        duration: 0,
+      };
+    }
+    return {
+      duration: 0.2,
+      ease: [0.4, 0, 0.2, 1] as const,
+    };
+  }, [isDragging, isResizing]);
+
+  // Handle minimized state after all hooks
   if (window.minimized) {
     return null;
   }
 
-  const windowStyle = window.maximized
-    ? (() => {
-        const isMobile = globalThis.window?.innerWidth < 768;
-        const taskbarHeight = isMobile ? 0 : 48;
-        return { 
-          x: 0, 
-          y: 0, 
-          width: '100vw', 
-          height: `calc(100vh - ${taskbarHeight}px)` 
-        };
-      })()
-    : { 
-        x: window.bounds.x, 
-        y: window.bounds.y, 
-        width: window.bounds.w, 
-        height: window.bounds.h 
-      };
-
   return (
     <motion.div
-      className={`absolute border rounded-lg shadow-2xl overflow-hidden transition-all flex flex-col cursor-default ${
+      className={`absolute border rounded-lg shadow-2xl overflow-hidden flex flex-col cursor-default ${
         isDark 
           ? 'bg-gray-800 border-gray-600' 
           : 'bg-white border-gray-300'
@@ -68,22 +98,12 @@ export const Window: React.FC<WindowProps> = ({ window, children }) => {
       }`}
       style={{
         ...windowStyle,
-        zIndex: window.zIndex + 1000, // Ensure windows are above desktop elements
+        zIndex: window.zIndex + 1000,
+        willChange: isDragging || isResizing ? 'transform' : 'auto',
       }}
       onClick={handleWindowClick}
-      initial={reduceMotion ? undefined : { scale: 0.9, opacity: 0 }}
-      animate={reduceMotion ? undefined : { 
-        scale: isDragging ? 1.02 : 1, 
-        opacity: 1,
-        rotateZ: isDragging ? 0.5 : 0
-      }}
-      exit={reduceMotion ? undefined : { scale: 0.9, opacity: 0 }}
-      transition={{ 
-        duration: isDragging || isResizing ? 0.1 : 0.2, 
-        ease: 'easeOut',
-        scale: { type: 'spring', stiffness: 300, damping: 30 }
-      }}
-      layout={!reduceMotion && !isDragging && !isResizing}
+      {...animationVariants}
+      transition={transition}
     >
       {/* Window Title Bar */}
       <WindowTitleBar window={window} />
@@ -94,7 +114,7 @@ export const Window: React.FC<WindowProps> = ({ window, children }) => {
       </div>
 
       {/* Resize Handles */}
-      <ResizeHandles window={window} />
+      {!window.maximized && <ResizeHandles window={window} />}
     </motion.div>
   );
 };

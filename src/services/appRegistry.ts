@@ -33,12 +33,16 @@ const SettingsApp = lazy(() =>
 );
 
 const ResumeViewerApp = lazy(() => 
-  import('../apps/ResumeViewerApp').then(module => {
+  import('../apps/ResumeViewerAppOptimized').then(module => {
     // Preload PDF.js
     import('pdfjs-dist');
     return module;
   })
 );
+
+const CalculatorApp = lazy(() => import('../apps/CalculatorApp'));
+
+const ClipboardManagerApp = lazy(() => import('../apps/ClipboardManagerApp'));
 
 /**
  * Application registry that manages all available applications
@@ -137,6 +141,28 @@ export class AppRegistry {
         component: ResumeViewerApp,
         defaultSize: { width: 800, height: 900 },
         minSize: { width: 400, height: 500 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      {
+        id: 'calculator',
+        name: 'Calculator',
+        icon: 'Calculator',
+        component: CalculatorApp,
+        defaultSize: { width: 380, height: 580 },
+        minSize: { width: 280, height: 450 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      {
+        id: 'clipboard',
+        name: 'Clipboard Manager',
+        icon: 'Clipboard',
+        component: ClipboardManagerApp,
+        defaultSize: { width: 500, height: 650 },
+        minSize: { width: 350, height: 400 },
         resizable: true,
         maximizable: true,
         multiInstance: false,

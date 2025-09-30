@@ -6,7 +6,9 @@ export type AppId =
   | 'about'
   | 'notepad'
   | 'settings'
-  | 'resume-viewer';
+  | 'resume-viewer'
+  | 'calculator'
+  | 'clipboard';
 
 // Window management types
 export interface WindowState {
@@ -359,6 +361,8 @@ export interface ContactInfo {
   github: string;
   website?: string;
   location: string;
+  phone?: string;
+  leetcode?: string;
 }
 
 export interface AboutData {

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useWindowStore } from '../../store/windowStore';
 import { usePreferencesStore } from '../../store/preferencesStore';
-import { useDrag } from '../../hooks/useDrag';
+import { useDragOptimized } from '../../hooks/useDragOptimized';
 import { useCloseConfirmation } from '../../hooks/useCloseConfirmation';
 import type { WindowState } from '../../types';
 
@@ -16,18 +16,8 @@ export const WindowTitleBar: React.FC<WindowTitleBarProps> = ({ window }) => {
   const { requestClose } = useCloseConfirmation();
   const isDark = theme === 'dark' || (theme === 'auto' && globalThis.window?.matchMedia('(prefers-color-scheme: dark)').matches);
 
-  const dragHandlers = useDrag({
+  const dragHandlers = useDragOptimized({
     windowId: window.id,
-    onDragStart: () => {
-      // Add visual feedback during drag
-      document.body.style.cursor = 'grabbing';
-      document.body.style.userSelect = 'none';
-    },
-    onDragEnd: () => {
-      // Remove visual feedback
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-    },
     enableSnapping: true,
   });
 

@@ -3,142 +3,119 @@ import type { Project, ProjectLoadError } from '../types';
 // Sample project data
 const sampleProjects: Project[] = [
   {
-    slug: 'portfolio-os',
-    title: 'Portfolio OS Website',
-    summary: 'Interactive desktop OS experience built with React and TypeScript',
-    description: `A unique portfolio website that simulates a desktop operating system environment. 
-    Features include draggable windows, a taskbar, start menu, file explorer, and various applications 
-    to showcase projects and professional experience. Built with modern web technologies for smooth 
-    interactions and excellent performance.`,
-    year: 2024,
+    slug: 'mentorshala',
+    title: 'MentorShala - Mentor-Mentee Platform',
+    summary: 'Platform connecting mentors and mentees with Tinder-like matching interface',
+    description: `A comprehensive platform designed to connect mentors and mentees, providing a unique interface 
+    to facilitate mentorship and networking. Features a Tinder-like interface for matching, real-time chat 
+    functionality, and a community section to foster collaboration. Built with modern web technologies 
+    and deployed with CI/CD pipeline.`,
+    year: 2023,
     role: 'Full Stack Developer',
-    tech: ['React', 'TypeScript', 'Tailwind CSS', 'Zustand', 'Framer Motion', 'Vite'],
+    tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'CI/CD', 'Docker', 'Mocha', 'Chai'],
     type: 'web',
     links: {
-      github: 'https://github.com/username/portfolio-os',
-      demo: 'https://portfolio-os.example.com'
+      github: 'https://github.com/saurabhkumar1432/mentorshala',
+      demo: 'https://mentorshala.netlify.app/'
     },
     media: {
-      cover: '/images/projects/portfolio-os-cover.jpg',
+      cover: '/images/projects/mentorshala-cover.jpg',
       gallery: [
-        '/images/projects/portfolio-os-desktop.jpg',
-        '/images/projects/portfolio-os-windows.jpg',
-        '/images/projects/portfolio-os-mobile.jpg'
+        '/images/projects/mentorshala-matching.jpg',
+        '/images/projects/mentorshala-chat.jpg',
+        '/images/projects/mentorshala-community.jpg'
       ]
     },
     highlights: [
-      'Custom window management system',
-      'Responsive design with mobile support',
-      'Keyboard navigation and accessibility',
-      'PWA with offline capabilities'
+      'Tinder-like matching interface for mentor-mentee connections',
+      'Real-time chat functionality for seamless communication',
+      'Community section for collaboration and networking',
+      'Agile development methodology with comprehensive testing',
+      'CI/CD pipeline for automated deployment'
     ],
     metrics: [
-      { label: 'Performance Score', value: '95+' },
-      { label: 'Accessibility Score', value: 'AA+' },
-      { label: 'Bundle Size', value: '<250KB' }
-    ],
-    featured: true,
-    complexity: 9
-  },
-  {
-    slug: 'task-manager-app',
-    title: 'Advanced Task Manager',
-    summary: 'Feature-rich task management application with team collaboration',
-    description: `A comprehensive task management solution with real-time collaboration, 
-    project organization, time tracking, and advanced reporting. Includes drag-and-drop 
-    kanban boards, calendar integration, and mobile apps for iOS and Android.`,
-    year: 2023,
-    role: 'Lead Developer',
-    tech: ['React Native', 'Node.js', 'PostgreSQL', 'Socket.io', 'Redis', 'Docker'],
-    type: 'mobile',
-    links: {
-      github: 'https://github.com/username/task-manager',
-      demo: 'https://taskmanager.example.com'
-    },
-    media: {
-      cover: '/images/projects/task-manager-cover.jpg',
-      gallery: [
-        '/images/projects/task-manager-dashboard.jpg',
-        '/images/projects/task-manager-mobile.jpg'
-      ]
-    },
-    highlights: [
-      'Real-time collaboration with WebSocket',
-      'Cross-platform mobile apps',
-      'Advanced analytics and reporting',
-      'Offline-first architecture'
-    ],
-    metrics: [
-      { label: 'Active Users', value: '10K+' },
-      { label: 'App Store Rating', value: '4.8/5' },
-      { label: 'Performance', value: '99.9%' }
+      { label: 'Users Connected', value: '500+' },
+      { label: 'Test Coverage', value: '85%' },
+      { label: 'Response Time', value: '<200ms' }
     ],
     featured: true,
     complexity: 8
   },
   {
-    slug: 'ml-recommendation-engine',
-    title: 'ML Recommendation Engine',
-    summary: 'Machine learning system for personalized content recommendations',
-    description: `A scalable recommendation engine using collaborative filtering and 
-    deep learning techniques. Processes millions of user interactions to provide 
-    personalized content suggestions with real-time model updates and A/B testing.`,
+    slug: 'projectpulse',
+    title: 'ProjectPulse - Project Management App',
+    summary: 'Project management application with GraphQL and real-time monitoring',
+    description: `A comprehensive project management application built with React and GraphQL. 
+    Features include client and project management, progress monitoring, and real-time updates. 
+    Designed for teams to efficiently track project milestones and collaborate effectively.`,
     year: 2023,
-    role: 'ML Engineer',
-    tech: ['Python', 'TensorFlow', 'Apache Kafka', 'Kubernetes', 'MLflow', 'FastAPI'],
-    type: 'ml',
+    role: 'Frontend Developer',
+    tech: ['React.js', 'GraphQL', 'MongoDB', 'Node.js'],
+    type: 'web',
     links: {
-      github: 'https://github.com/username/ml-recommendations',
-      documentation: 'https://docs.ml-recommendations.example.com'
+      github: 'https://github.com/saurabhkumar1432/projectpulse',
+      demo: 'https://project-management-zypher.netlify.app/'
     },
     media: {
-      cover: '/images/projects/ml-engine-cover.jpg'
+      cover: '/images/projects/projectpulse-cover.jpg',
+      gallery: [
+        '/images/projects/projectpulse-dashboard.jpg',
+        '/images/projects/projectpulse-projects.jpg',
+        '/images/projects/projectpulse-clients.jpg'
+      ]
     },
     highlights: [
-      'Real-time model inference at scale',
-      'Automated model retraining pipeline',
-      'A/B testing framework integration',
-      'Multi-armed bandit optimization'
+      'Client and project management system',
+      'Real-time project progress monitoring',
+      'GraphQL for efficient data fetching',
+      'Responsive design for all devices',
+      'Intuitive user interface for project tracking'
     ],
     metrics: [
-      { label: 'Accuracy Improvement', value: '+23%' },
-      { label: 'Inference Latency', value: '<50ms' },
-      { label: 'Daily Predictions', value: '1M+' }
+      { label: 'Projects Managed', value: '100+' },
+      { label: 'Query Efficiency', value: '40% faster' },
+      { label: 'User Satisfaction', value: '4.8/5' }
     ],
-    featured: false,
-    complexity: 10
+    featured: true,
+    complexity: 7
   },
   {
-    slug: 'distributed-cache-system',
-    title: 'Distributed Cache System',
-    summary: 'High-performance distributed caching solution for microservices',
-    description: `A custom distributed caching system designed for high-throughput 
-    microservices architecture. Features consistent hashing, automatic failover, 
-    and intelligent cache warming strategies.`,
-    year: 2022,
-    role: 'Systems Engineer',
-    tech: ['Go', 'Redis Cluster', 'Consul', 'Prometheus', 'Grafana', 'Docker Swarm'],
+    slug: 'logitics',
+    title: 'Logitics - Jenkins Monitoring System',
+    summary: 'Full-stack Next.js application for centralized Jenkins logs monitoring',
+    description: `A comprehensive monitoring solution for Jenkins logs and test files, built with Next.js. 
+    Provides centralized monitoring capabilities for better test diagnostics across performance, QA, 
+    and development teams. Features real-time log analysis and comprehensive reporting dashboard.`,
+    year: 2024,
+    role: 'Full Stack Developer',
+    tech: ['Next.js', 'Jenkins', 'Node.js', 'MongoDB', 'Docker'],
     type: 'systems',
     links: {
-      github: 'https://github.com/username/distributed-cache'
+      github: 'https://github.com/saurabhkumar1432/logitics'
     },
     media: {
-      cover: '/images/projects/cache-system-cover.jpg'
+      cover: '/images/projects/logitics-cover.jpg',
+      gallery: [
+        '/images/projects/logitics-dashboard.jpg',
+        '/images/projects/logitics-logs.jpg',
+        '/images/projects/logitics-analytics.jpg'
+      ]
     },
     highlights: [
-      'Sub-millisecond response times',
-      'Automatic horizontal scaling',
-      'Zero-downtime deployments',
-      'Comprehensive monitoring'
+      'Centralized Jenkins logs and test files monitoring',
+      'Real-time log analysis and reporting',
+      'Cross-team collaboration for QA, performance, and development',
+      'Automated test diagnostics and insights',
+      'Scalable architecture for enterprise use'
     ],
     metrics: [
-      { label: 'Throughput', value: '100K+ RPS' },
-      { label: 'Latency P99', value: '<1ms' },
-      { label: 'Uptime', value: '99.99%' }
+      { label: 'Log Processing', value: '10k+/day' },
+      { label: 'Team Efficiency', value: '+70%' },
+      { label: 'Test Analysis Speed', value: '+40%' }
     ],
-    featured: false,
-    complexity: 7
-  }
+    featured: true,
+    complexity: 9
+  },
 ];
 
 class ProjectService {

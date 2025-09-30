@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Desktop, Taskbar } from './desktop';
 import { WindowManager } from './window';
 import { KeyboardShortcutProvider } from './KeyboardShortcutProvider';
@@ -8,12 +8,21 @@ import { AccessibilityToolbar } from './AccessibilityToolbar';
 import { SkipLink } from './SkipLink';
 import { ThemeProvider } from './ThemeProvider';
 import { AnimatedTransition } from './ui/AnimatedTransition';
+import { CommandPalette } from './ui/CommandPalette';
+import { ToastNotifications } from './ui/ToastNotifications';
+import { ActionCenter } from './ui/ActionCenter';
+import { QuickSettings } from './ui/QuickSettings';
+import { SnapPreviewOverlay } from './ui/SnapPreviewOverlay';
+import { WidgetsPanel } from './widgets';
 import { useReduceMotion } from '../hooks/useReduceMotion';
 import { useAccessibilitySettings } from '../hooks/useAccessibilitySettings';
 import { performanceOptimizer } from '../utils/performanceOptimizations';
 import { windowLifecycleManager } from '../services/windowLifecycleManager';
 
 export const DesktopOS: React.FC = () => {
+  const [isQuickSettingsOpen, setIsQuickSettingsOpen] = useState(false);
+  const [showWidgets, setShowWidgets] = useState(false);
+  
   // Apply reduce motion preference
   useReduceMotion();
   
@@ -63,8 +72,24 @@ export const DesktopOS: React.FC = () => {
             
             {/* Navigation/Controls */}
             <nav id="taskbar" aria-label="System taskbar">
-              <Taskbar />
+              <Taskbar 
+                onToggleQuickSettings={() => setIsQuickSettingsOpen(!isQuickSettingsOpen)}
+                onToggleWidgets={() => setShowWidgets(!showWidgets)}
+              />
             </nav>
+            
+            {/* Modern Features */}
+            <CommandPalette />
+            <ToastNotifications />
+            <ActionCenter />
+            <QuickSettings 
+              isOpen={isQuickSettingsOpen} 
+              onClose={() => setIsQuickSettingsOpen(false)} 
+            />
+            <SnapPreviewOverlay />
+            
+            {/* Desktop Widgets */}
+            {showWidgets && <WidgetsPanel />}
           </div>
         </KeyboardShortcutProvider>
       </AccessibilityProvider>

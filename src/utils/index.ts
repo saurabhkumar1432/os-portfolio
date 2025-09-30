@@ -200,6 +200,24 @@ export const appUtils = {
         maximizable: true,
         multiInstance: false,
       },
+      'calculator': {
+        name: 'Calculator',
+        icon: 'calculator',
+        defaultSize: { width: 400, height: 600 },
+        minSize: { width: 350, height: 500 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
+      'clipboard': {
+        name: 'Clipboard Manager',
+        icon: 'clipboard',
+        defaultSize: { width: 500, height: 650 },
+        minSize: { width: 350, height: 400 },
+        resizable: true,
+        maximizable: true,
+        multiInstance: false,
+      },
     };
     
     return configs[appId];

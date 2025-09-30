@@ -1,9 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Bell, Settings, Layout } from 'lucide-react';
 import { usePreferencesStore } from '../../store/preferencesStore';
+import { useNotificationStore } from '../../store/notificationStore';
 
-export const SystemTray: React.FC = () => {
+interface SystemTrayProps {
+  onToggleQuickSettings: () => void;
+  onToggleWidgets?: () => void;
+}
+
+export const SystemTray: React.FC<SystemTrayProps> = ({ onToggleQuickSettings, onToggleWidgets }) => {
   const { theme } = usePreferencesStore();
+  const { unreadCount, toggleActionCenter } = useNotificationStore();
   const isDark = theme === 'dark' || (theme === 'auto' && globalThis.window?.matchMedia('(prefers-color-scheme: dark)').matches);
 
   const getCurrentTime = () => {
@@ -39,6 +47,56 @@ export const SystemTray: React.FC = () => {
     <div className="flex items-center gap-2">
       {/* System Icons */}
       <div className="flex items-center gap-1">
+        {/* Widgets Toggle */}
+        {onToggleWidgets && (
+          <motion.button
+            className={`p-1 rounded hover:bg-opacity-20 ${
+              isDark ? 'hover:bg-white text-gray-300' : 'hover:bg-black text-gray-600'
+            }`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            title="Desktop Widgets"
+            onClick={onToggleWidgets}
+          >
+            <Layout className="w-4 h-4" />
+          </motion.button>
+        )}
+
+        {/* Quick Settings */}
+        <motion.button
+          className={`p-1 rounded hover:bg-opacity-20 ${
+            isDark ? 'hover:bg-white text-gray-300' : 'hover:bg-black text-gray-600'
+          }`}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          title="Quick Settings"
+          onClick={onToggleQuickSettings}
+        >
+          <Settings className="w-4 h-4" />
+        </motion.button>
+
+        {/* Notification Bell */}
+        <motion.button
+          className={`relative p-1 rounded hover:bg-opacity-20 ${
+            isDark ? 'hover:bg-white text-gray-300' : 'hover:bg-black text-gray-600'
+          }`}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          title={`Notifications${unreadCount > 0 ? ` (${unreadCount})` : ''}`}
+          onClick={toggleActionCenter}
+        >
+          <Bell className="w-4 h-4" />
+          {unreadCount > 0 && (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center"
+            >
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </motion.span>
+          )}
+        </motion.button>
+
         {/* Network Icon */}
         <motion.button
           className={`p-1 rounded hover:bg-opacity-20 ${

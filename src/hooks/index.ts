@@ -1,4 +1,5 @@
 export { useDrag } from './useDrag';
+export { useDragOptimized } from './useDragOptimized';
 export { useResize } from './useResize';
 export { useAccessibilitySettings } from './useAccessibilitySettings';
 export { useAppFramework } from './useAppFramework';
